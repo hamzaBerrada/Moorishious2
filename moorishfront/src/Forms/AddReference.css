@@ -1,0 +1,15 @@
+form{
+    display: flex;
+    flex-direction: column;
+}
+input{
+    max-width: 200px;
+}
+
+.radio{
+    margin-left: 2rem;
+}
+
+.App-intro{
+    margin-bottom: 1rem;
+}
