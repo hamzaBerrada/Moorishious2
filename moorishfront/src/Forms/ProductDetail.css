@@ -1,0 +1,8 @@
+.Img-catalogue > *{
+    width: 350px;
+    height: 500px;
+}
+
+.Product-details{
+position: relative;
+}

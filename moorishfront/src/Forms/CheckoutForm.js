@@ -26,7 +26,7 @@ class CheckoutForm extends Component {
         this.setState({payement : payement});
 
         console.log(this.state.payement.source);
-        axios.post(`http://localhost:8080/getPaid/`, payement)
+        axios.post(`/getPaid/`, payement)
             .then(res => {
                 if(res.status === 200) this.setState({complete : true});
             })

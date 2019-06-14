@@ -25,5 +25,7 @@ public interface ProductService {
 	void deleteProduct(Long id);
 
 	void deleteReference(Long id);
+	
+	Long deleteReferenceByRef(String ref);
 
 }

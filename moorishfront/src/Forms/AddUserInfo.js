@@ -50,7 +50,7 @@ class AddUserInfo extends Component{
             country : this.state.country,
             phone : this.state.phone
         };
-        axios.post(`http://localhost:8080/addUser`, infos)
+        axios.post(`/addUser`, infos)
             .then(res => {
                 this.props.handleSubmit(infos);
             });

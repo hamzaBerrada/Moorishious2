@@ -20,7 +20,7 @@ class AddSale extends Component {
     }
 
     componentWillMount() {
-        axios.get(`http://localhost:8080/listProducts`)
+        axios.get(`/listProducts`)
             .then(res => {
                 const sale = {...this.state.sale};
                 sale.listProducts = res.data;
@@ -49,7 +49,7 @@ class AddSale extends Component {
             listProducts:this.state.listProducts,
             totalAmount:this.state.totalAmount
         }
-        axios.post(`http://localhost:8080/addSale`, sale)
+        axios.post(`/addSale`, sale)
             .then(res => {
                 this.props.handleSubmit(sale);
             })

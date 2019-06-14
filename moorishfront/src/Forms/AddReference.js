@@ -24,7 +24,7 @@ class AddReference extends Component {
     }
 
     componentWillMount() {
-        axios.get(`http://localhost:8080/categoryReference`)
+        axios.get(`/categoryReference`)
             .then(res => {
                 const character = {...this.state.character};
                 character.category = res.data;
@@ -38,7 +38,7 @@ class AddReference extends Component {
        this.handleChange(event);
        const cat = ""+event.target.value;
        console.log(cat);
-        axios.post(`http://localhost:8080/subCategory`, cat)
+        axios.post(`/subCategory`, cat)
             .then(res => {
                 console.log("hhhhhh", res)
                 const character = {...this.state.character};
@@ -83,7 +83,7 @@ class AddReference extends Component {
 
         data.append('file', this.state.file);
         //data.append('name', this.state.file.name);
-        axios.post(`http://localhost:8080/uploadFile`, data, config)
+        axios.post(`/uploadFile`, data, config)
             .then((response) => {
                 console.log(response);
             })
@@ -101,7 +101,7 @@ class AddReference extends Component {
             subCategory:this.state.subCategory,
             desc:this.state.desc
         }
-        axios.post(`http://localhost:8080/addReference`, reference)
+        axios.post(`/addReference`, reference)
             .then(res => {
                 this.props.handleSubmit(reference);
             })

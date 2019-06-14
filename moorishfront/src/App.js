@@ -7,11 +7,12 @@ import axios from "axios";
 import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
 import logo from "./resources/logo.png";
 import './Forms/Menu.css';
-import product from "./Forms/Product";
+import products from "./Forms/Products";
 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import CheckoutForm from './Forms/CheckoutForm';
 import AddUserInfo from "./Forms/AddUserInfo";
+import productDetail from "./Forms/ProductDetail";
 
 class App extends Component {
 
@@ -41,7 +42,7 @@ class App extends Component {
     }
 
     componentWillMount() {
-        const config = {headers: {'Content-Type': 'multipart/form-data'}};
+     /*   const config = {headers: {'Content-Type': 'multipart/form-data'}};
         axios.get(`http://localhost:8080/listReference`, config)
             .then(res => {
                 console.log(res.data);
@@ -49,11 +50,11 @@ class App extends Component {
             })
             .catch((error) => {
                 console.log(error);
-            });
+            });*/
     }
 
     render() {
-        const {characters} = this.state;
+        // const {characters} = this.state;
 
         return (
             <>
@@ -71,7 +72,7 @@ class App extends Component {
                                         <Link className="cool" to="/addReference">Add Reference</Link>
                                     </li>
                                     <li>
-                                        <Link className="cool" to="/product">Products</Link>
+                                        <Link className="cool" to="/products">Products</Link>
                                     </li>
                                     <li>
                                         <Link className="cool" to="/addUserInfo">Add User</Link>
@@ -87,11 +88,11 @@ class App extends Component {
                     <div className="container">
                         <Route path="/table"
                                render={() => <ListReference
-                                   characterData={characters}
                                    removeCharacter={this.removeCharacter}
                                />}/>
                         <Route path="/addReference" render={() => <AddReference handleSubmit={this.handleSubmit}/>}/>
-                        <Route path="/product" component={product}/>
+                        <Route path="/products" component={products}/>
+                        <Route path='/product/:id' component={productDetail}/>
                         <Route path="/addUserInfo" component={AddUserInfo}/>
                     </div>
                 </Router>

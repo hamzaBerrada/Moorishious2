@@ -4,11 +4,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +22,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.stripe.Stripe;
 import com.stripe.model.Charge;
 
-import rig.github.moorish.model.AppUser;
 import rig.github.moorish.model.Payement;
 import rig.github.moorish.model.Reference;
 import rig.github.moorish.model.Sale;
@@ -46,6 +48,8 @@ public class ReferenceController {
 	
 	private String path;
 	
+	Logger logger = LoggerFactory.getLogger(getClass());
+	
 	public ReferenceController() {
 	}
 
@@ -60,6 +64,8 @@ public class ReferenceController {
 		ref.setPrice(reference.getPrice());
 		ref.setRef(reference.getRef());
 		ref.setPathPrincipal(path);
+		if(defaultProductService.getReferenceByRef(ref.getRef())!=null) 
+			defaultProductService.deleteReferenceByRef(ref.getRef());
 		return defaultProductService.addOrUpdateReference(ref);
 	}
 
@@ -83,16 +89,25 @@ public class ReferenceController {
 		return Arrays.asList(files).stream().map(file -> uploadFile(file)).collect(Collectors.toList());
 	}
 
-	@PostMapping("/deleteReference")
-	public void deleteReference(@RequestBody Reference ref) {
+	@DeleteMapping("/products/{id}")
+	public void deleteReference(@PathVariable("id") String id) {
 		Reference refo = new Reference();
-		refo = defaultProductService.getReferenceByRef(ref.getRef());
+		refo = defaultProductService.getReferenceByRef(id);
 		defaultProductService.deleteReference(refo.getId());
 	}
 	
 	@GetMapping("/categoryReference")
 	public Category[] categoryReference() {
 		return Category.values();
+	}
+	
+	@GetMapping("/getReference/{id}")
+	public Reference getReference(@PathVariable("id") String id) {
+		logger.info("The retrieved parameter is " + id);
+		
+		Reference reference =  defaultProductService.getReferenceByRef(id);
+		logger.info("The returned reference is " + reference);
+		return reference;
 	}
 		
 	@PostMapping("/subCategory")

@@ -6,4 +6,5 @@ import rig.github.moorish.model.Reference;
 
 public interface ReferenceRepository extends JpaRepository<Reference, Long> {
 	Reference findByRef(String ref);
+	Long deleteByRef(String ref);
 }

@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests().antMatchers("/login/**","/register/**","/logout/**","/addReference/**",
 				"/listReference/**","/uploadFile/**","/uploadMultipleFiles/**","/downloadFile/**","/deleteReference/**",
 				"/categoryReference/**","/h2/**","/subCategory/**","/getPaid/**").permitAll();
-		http.authorizeRequests().anyRequest().authenticated();
+		http.authorizeRequests().anyRequest().permitAll();
 		http.addFilterBefore(new CorsResponseFilter(),  UsernamePasswordAuthenticationFilter.class);
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
 		http.addFilterBefore(new JWTAuthorizationFilter(), CorsResponseFilter.class);

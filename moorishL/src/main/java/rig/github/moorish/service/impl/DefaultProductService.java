@@ -41,6 +41,7 @@ public class DefaultProductService implements ProductService {
 
 	@Override
 	public Reference getReferenceByRef(String ref) {
+		System.out.println("getReferenceByRef "+ref);
 		return referenceRepo.findByRef(ref);
 	}
 
@@ -72,6 +73,17 @@ public class DefaultProductService implements ProductService {
 			referenceRepo.deleteById(id);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+		}
+	}
+
+	@Transactional
+	public Long deleteReferenceByRef(String ref) {
+		try {
+			System.out.println("deleteReferenceByRef "+ref);
+			return referenceRepo.deleteByRef(ref);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
 		}
 	}
 
