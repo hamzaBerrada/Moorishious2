@@ -1,8 +1,15 @@
+.Container-product{
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .Img-catalogue > *{
     width: 350px;
     height: 500px;
+    order: 1;
+    margin-right: 60px;
 }
 
 .Product-details{
-position: relative;
+    order: 1;
 }

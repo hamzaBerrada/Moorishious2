@@ -24,6 +24,10 @@ class productDetail extends Component {
             });
     }
 
+    submitForm = (event) => {
+        console.log("hamid in product Detail");
+    }
+
     render() {
         const {character} = this.state;
         return (
@@ -33,14 +37,18 @@ class productDetail extends Component {
                         <img src={logo1} alt="text"/>
                     </div>
                     <div className="Product-details">
-                        <h1>product detail</h1>
-                        <h1>{character.ref}</h1>
-                        <h1>{character.name}</h1>
-                        <h1>{character.price}</h1>
-                        <h1>{character.gender}</h1>
-                        <h1>{character.category}</h1>
-                        <h1>{character.subCategory}</h1>
-                        <h1>{character.desc}</h1>
+                        <h4>product detail</h4>
+                        <h4>{character.ref}</h4>
+                        <h4>{character.name}</h4>
+                        <h4>{character.price}</h4>
+                        <h4>{character.gender}</h4>
+                        <h4>{character.category}</h4>
+                        <h4>{character.subCategory}</h4>
+                        <h4>{character.desc}</h4>
+                        <input
+                            type="button"
+                            value="Add to bag"
+                            onClick={this.submitForm} />
                     </div>
                 </div>
             </>
