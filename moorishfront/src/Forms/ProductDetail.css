@@ -13,3 +13,19 @@
 .Product-details{
     order: 1;
 }
+
+.Product-colors{
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 200px;
+    height: auto;
+}
+
+.Product-color{
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

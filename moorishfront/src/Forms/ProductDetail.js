@@ -6,8 +6,20 @@ import './ProductDetail.css';
 class productDetail extends Component {
     constructor(props) {
         super(props);
+        const colors = ['red', 'yellow', 'green', 'black', 'purple', 'gray', 'blue'];
+
+        const product = {
+            reference: this.props,
+            color: '',
+            quantity: ''
+        }
         this.state = {
-            character: []
+            character: [],
+            bag: [],
+            colors,
+            product,
+            colr: "",
+            qty: 1
         }
     }
 
@@ -28,6 +40,18 @@ class productDetail extends Component {
         console.log("hamid in product Detail");
     }
 
+    changeColor = (coll) => {
+        console.log("the selected color is : ", coll);
+        this.setState({colr: coll});
+    }
+
+    changeQty = (evt) =>{
+        const val = (evt.target.validity.valid) ? evt.target.value : this.state.qty;
+        this.setState({qty: val});
+
+        console.log("the selected product is : ", this.state.product);
+    }
+
     render() {
         const {character} = this.state;
         return (
@@ -45,10 +69,22 @@ class productDetail extends Component {
                         <h4>{character.category}</h4>
                         <h4>{character.subCategory}</h4>
                         <h4>{character.desc}</h4>
+
+                        <input type="number"  min="1" max="10" value={this.state.qty}
+                               onInput={this.changeQty} />
+
+                        <div className="Product-colors">
+                            {this.state.colors.map(col => {
+                                return (<div className="Product-color" style={{"background-color" : col}}
+                                             onClick={()=>this.changeColor(col)}> </div>)
+                            })
+                            }
+                        </div>
+
                         <input
                             type="button"
                             value="Add to bag"
-                            onClick={this.submitForm} />
+                            onClick={this.submitForm}/>
                     </div>
                 </div>
             </>

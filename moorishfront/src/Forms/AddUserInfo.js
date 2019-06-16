@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './AddUserInfo.css';
 import axios from "axios";
 
-class AddUserInfo extends Component{
+class addUserInfo extends Component{
 
     constructor(props){
         super(props);
@@ -124,4 +124,4 @@ class AddUserInfo extends Component{
     }
 }
 
-export default AddUserInfo;
+export default addUserInfo;

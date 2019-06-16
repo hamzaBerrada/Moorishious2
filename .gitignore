@@ -1,3 +1,6 @@
 node_modules/
 .idea/
 moorishfront/node_modules/
+/.metadata/
+.recommenders/
+.metadata/
