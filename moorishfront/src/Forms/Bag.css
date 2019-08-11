@@ -1,0 +1,28 @@
+.Separation{
+    display: block;
+    width: 70%;
+    height: 2px;
+    background-color: black;
+    margin: 0 auto;
+}
+
+.Products-Bag > p, label{
+    display: inline;
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+.Products-Bag > select{
+    display: inline;
+    width: 100px;
+    margin-left: 10px;
+}
+
+.Products-Bag > input{
+    display: inline;
+    width: 100px;
+    margin-left: 10px;
+    margin-top: 16px;
+
+}
+

@@ -14,6 +14,10 @@
     order: 1;
 }
 
+.Product-details > p{
+    font-size: 17px;
+}
+
 .Product-colors{
     display: flex;
     flex-flow: row wrap;
@@ -28,4 +32,24 @@
     width: 30px;
     margin-right: 10px;
     margin-bottom: 10px;
+}
+
+.Product-sizes{
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 200px;
+    height: auto;
+}
+
+.Product-size{
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: solid 1px;
+    text-align: center;
+    font-size: 0.6em;
+    font-weight: bold;
 }

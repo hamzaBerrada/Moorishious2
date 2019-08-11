@@ -161,4 +161,10 @@ public class ReferenceController {
 		
 	}
 	
+	@PostMapping("/purchaseProducts")
+	public boolean purchaseProducts(@RequestBody Sale sale) {
+		System.out.println(sale.getTotalAmount());
+		return false;
+	}
+	
 }

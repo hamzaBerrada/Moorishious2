@@ -1,114 +1,167 @@
 import React, {Component} from 'react';
-import './Products.css';
+import './Bag.css';
 import axios from "axios";
-import {Link} from 'react-router-dom';
-import logo1 from '../resources/1.jpg';
-import logo2 from '../resources/2.jpg';
 
-class bag extends Component {
+class Bag extends Component {
     constructor(props) {
         super(props);
+        const color = ['red', 'yellow', 'green', 'black', 'purple', 'gray', 'blue'];
+        const size = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+        const quantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+        const product = {
+            reference: {},
+            color: '',
+            size: ''
+        }
+
         this.state = {
-            characters: [],
-            isPointed: false,
-            selected: ''
+            color,
+            size,
+            quantity,
+            product
         }
     }
 
     componentWillMount() {
-        const config = {headers: {'Content-Type': 'multipart/form-data'}};
-        axios.get(`/listReference`, config)
-            .then(res => {
-                console.log(res.data);
-                this.setState({characters: res.data})
-            })
-            .catch((error) => {
-                console.log(error);
+        const val = localStorage.getItem('bag') || '';
+        const bag = JSON.parse(val);
+
+        this.setState({bag});
+
+        // this.setState(prevState=>{
+        //      return {bag : [...prevState, bag]}
+        //  });
+        setTimeout(() => {
+
+            console.log('timeout bag ', this.state.bag);
+        }, 500)
+    }
+
+    changeColor = (ev, index) => {
+        const newElem = ev.target.value;
+        let {bag} = this.state;
+        bag[index].color = newElem;
+        this.setState(() => {
+            return {bag}
+        }, () => {
+            localStorage.setItem('bag', JSON.stringify(bag))
+        })
+    }
+
+    changeSize = (ev, index) => {
+        const newSize = ev.target.value;
+        let {bag} = this.state;
+        bag[index].size = newSize;
+        this.setState(() => {
+            return {bag}
+        }, () => {
+            localStorage.setItem('bag', JSON.stringify(bag))
+        })
+    }
+
+    changeQty = (ev, index) => {
+        const newQuantity = ev.target.value;
+        let {bag} = this.state;
+        bag[index].quantity = newQuantity;
+        this.setState(() => {
+            return {bag}
+        }, () => {
+            localStorage.setItem('bag', JSON.stringify(bag))
+        });
+    }
+
+    deleteProduct = (e, index) => {
+        let {bag} = this.state;
+        if (index !== -1) {
+            bag.splice(index, 1);
+            this.setState(() => {return {bag}}, () => {
+                localStorage.setItem('bag', JSON.stringify(bag))
             });
-
+        }
     }
 
-    mouseEnter(ev, key) {
-        ev.preventDefault();
-        this.setState({isPointed: true, selected: key});
+    submitForm = (bag) => {
+        const url = '/purchaseProducts';
+        if(bag) {
+            axios.post(url, bag)
+                .then(result => console.log(result))
+                .catch(err => console.log(err));
+        }
     }
 
-    mouseLeave(ev, key) {
-        ev.preventDefault();
-        this.setState({isPointed: false, selected: key});
-    }
 
     render() {
-        const {characters} = this.state;
-
+        const {bag} = this.state;
+        console.log('render: the bag is ', this.state.bag);
         return (
-            <div>
-                <h1>Jackets</h1>
-                <nav className="product-filter">
+            <>
+                <h1>Bag</h1>
 
-
-                    <div className="sort">
-                        <div className="collection-sort">
-                            <label className="label-product">Filter by:</label>
-                            <select>
-                                <option value="/">All Jackets</option>
-                                <option value="/">2016</option>
-                                <option value="/">jacket</option>
-                                <option value="/">Jackets</option>
-                                <option value="/">layers</option>
-                                <option value="/">Obermeyer</option>
-                                <option value="/">Roxy</option>
-                                <option value="/">womens</option>
-                            </select>
-                        </div>
-
-                        <div className="collection-sort">
-                            <label className="label-product">Sort by:</label>
-                            <select>
-                                <option value="/">Featured</option>
-                                <option value="/">Best Selling</option>
-                                <option value="/">Alphabetically, A-Z</option>
-                                <option value="/">Alphabetically, Z-A</option>
-                                <option value="/">Price, low to high</option>
-                                <option value="/">Price, high to low</option>
-                                <option value="/">Date, new to old</option>
-                                <option value="/">Date, old to new</option>
-                            </select>
-                        </div>
-                    </div>
-                </nav>
-
-                <section className="products">
-                    {characters.map((character, index) => {
-                            const id = character.ref;
+                <div>
+                    <h1>
+                        {bag.map((key, index) => {
                             return (
+                                <div>
+                                    <div className="Products-Bag">
+                                        <p>{key.reference.name}</p>
+                                        <p>{key.reference.price}</p>
+                                        <p>{key.reference.category}</p>
+                                        <p>{key.reference.subCategory}</p>
 
-                                <Link key={index}
-                                      className="product-card" to={`/product/${id}`}>
+                                        <label>Quantity</label>
+                                        <select name="quantity" value={key.quantity}
+                                                onChange={(ev) => this.changeQty(ev, index)} multiple={false}>
+                                            {this.state.quantity.map(field => (
+                                                <option key={field} value={field}>
+                                                    {field}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                    <div className="product-image" onMouseEnter={(e) => this.mouseEnter(e, index)}
-                                         onMouseLeave={(e) => this.mouseLeave(e, index)}>
-                                        {(this.state.isPointed && this.state.selected === index) ?
-                                            <img alt="hamid"
-                                                 src={logo1}/>
-                                            : <img alt="hamid1"
-                                                   src={logo2}/>
-                                        }
+                                        <label>Color</label>
+                                        <select name="color" value={key.color}
+                                                onChange={(ev) => this.changeColor(ev, index)}
+                                                multiple={false}>
+                                            {this.state.color.map(field => (
+                                                <option key={field} value={field}>
+                                                    {field}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                        <label>Size</label>
+                                        <select name="size" value={key.size}
+                                                onChange={(ev) => this.changeSize(ev, index)}
+                                                multiple={false}>
+                                            {this.state.size.map(field => (
+                                                <option key={field} value={field}>
+                                                    {field}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                        <input
+                                            type="button"
+                                            value="Delete"
+                                            onClick={(ev) => this.deleteProduct(ev, index)}/>
+                                        <div className="Separation"> </div>
                                     </div>
-                                    <div className="product-info">
-                                        <h5>{character.ref}</h5>
-                                        <h6>{character.price} $</h6>
-                                    </div>
-                                </Link>
+                                </div>)
+                        })}
+                    </h1>
 
-                            )
-                        }
-                    )}
-                </section>
-            </div>
+
+                    <input
+                        type="button"
+                        value="Purchase all"
+                        onClick={() => this.submitForm(bag)}/>
+
+                </div>
+            </>
 
         );
     }
 }
 
-export default bag;
+export default Bag;

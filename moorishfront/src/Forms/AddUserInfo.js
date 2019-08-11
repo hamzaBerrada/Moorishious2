@@ -1,33 +1,36 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './AddUserInfo.css';
 import axios from "axios";
+import {Elements, StripeProvider} from "react-stripe-elements";
+import CheckoutForm from "./CheckoutForm";
 
-class addUserInfo extends Component{
+class addUserInfo extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.infos = {
-            firstName : '',
-            lastName : '',
-            email : '',
-            address : '',
-            code : '',
-            city : '',
-            country : [],
-            phone : ''
-            }
+            firstName: '',
+            lastName: '',
+            email: '',
+            address: '',
+            code: '',
+            city: '',
+            country: [],
+            phone: ''
+        }
         ;
-        this.state = {infos : this.infos}
+        this.state = {infos: this.infos}
     }
 
-    componentWillMount(){
+    componentWillMount() {
         axios.get(`https://restcountries.eu/rest/v2/all`)
             .then(res => {
                 const infos = {...this.state.infos};
                 infos.country = res.data;
-                console.log(infos.country.map(f=>(f.name)))
-                this.setState({infos: infos})})
-            .catch((error)=>{
+                console.log(infos.country.map(f => (f.name)))
+                this.setState({infos: infos})
+            })
+            .catch((error) => {
                 console.log(error);
             });
     }
@@ -35,20 +38,20 @@ class addUserInfo extends Component{
     handleChange = event => {
         const {name, value} = event.target;
         this.setState({
-            [name] : value
+            [name]: value
         });
     };
 
-    submitForm(){
+    submitForm() {
         const infos = {
-            firstName : this.state.firstName,
-            lastName : this.state.lastName,
-            email : this.state.email,
-            address : this.state.address,
-            code : this.state.code,
-            city : this.state.city,
-            country : this.state.country,
-            phone : this.state.phone
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            address: this.state.address,
+            code: this.state.code,
+            city: this.state.city,
+            country: this.state.country,
+            phone: this.state.phone
         };
         axios.post(`/addUser`, infos)
             .then(res => {
@@ -58,68 +61,79 @@ class addUserInfo extends Component{
         this.setState(this.infos);
     }
 
-    render(){
-        const {firstName,lastName,email,address,code,city,country,phone} = this.state;
+    render() {
+        const {firstName, lastName, email, address, code, city, country, phone} = this.state;
         const infos = {...this.state.infos};
-        return(
-            <form>
-                <label>Nom : </label>
-                <input
-                    type="text"
-                    name="lastName"
-                    value={lastName}
-                />
-                <label>Prenom : </label>
-                <input
-                    type="text"
-                    name="firstName"
-                    value={firstName}
-                />
-                <label>Email : </label>
-                <input
-                    type="text"
-                    name="email"
-                    value={email}
-                />
-                <label>Pays</label>
-                <select name="Pays" value={country} onChange={this.handleChange} multiple={false}>
-                    {infos.country.map(field => (
+        return (
+            <>
+                <form>
+                    <label>Nom : </label>
+                    <input
+                        type="text"
+                        name="lastName"
+                        value={lastName}
+                    />
+                    <label>Prenom : </label>
+                    <input
+                        type="text"
+                        name="firstName"
+                        value={firstName}
+                    />
+                    <label>Email : </label>
+                    <input
+                        type="text"
+                        name="email"
+                        value={email}
+                    />
+                    <label>Pays</label>
+                    <select name="Pays" value={country} onChange={this.handleChange} multiple={false}>
+                        {infos.country.map(field => (
 
-                        <option key={field.name} value={field.name}>
-                            {field.name}
-                        </option>
-                    ))}
-                </select>
-                <label>ville : </label>
-                <input
-                    type="text"
-                    name="city"
-                    value={city}
-                />
-                <label>adresse : </label>
-                <input
-                    type="text"
-                    name="address"
-                    value={address}
-                />
-                <label>code postal : </label>
-                <input
-                    type="text"
-                    name="code"
-                    value={code}
-                />
-                <label>tel : </label>
-                <input
-                    type="text"
-                    name="phone"
-                    value={phone}
-                />
+                            <option key={field.name} value={field.name}>
+                                {field.name}
+                            </option>
+                        ))}
+                    </select>
+                    <label>ville : </label>
+                    <input
+                        type="text"
+                        name="city"
+                        value={city}
+                    />
+                    <label>adresse : </label>
+                    <input
+                        type="text"
+                        name="address"
+                        value={address}
+                    />
+                    <label>code postal : </label>
+                    <input
+                        type="text"
+                        name="code"
+                        value={code}
+                    />
+                    <label>tel : </label>
+                    <input
+                        type="text"
+                        name="phone"
+                        value={phone}
+                    />
 
-                <input
-                    type="button"
-                    value="Submit"
-                    onClick={this.submitForm} />
-            </form>
+                    <input
+                        type="button"
+                        value="Submit"
+                        onClick={this.submitForm}/>
+                </form>
+
+                <StripeProvider apiKey="pk_test_JhtvLx6RBQkhFgP9ZUDqBumD">
+                    <div className="example">
+                        <h1>React Stripe Elements Example</h1>
+                        <Elements>
+                            <CheckoutForm/>
+                        </Elements>
+                    </div>
+                </StripeProvider>
+            </>
         )
     }
 }
