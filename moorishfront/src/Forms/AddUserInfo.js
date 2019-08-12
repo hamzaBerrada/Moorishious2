@@ -4,7 +4,7 @@ import axios from "axios";
 import {Elements, StripeProvider} from "react-stripe-elements";
 import CheckoutForm from "./CheckoutForm";
 
-class addUserInfo extends Component {
+class AddUserInfo extends Component {
 
     constructor(props) {
         super(props);
@@ -67,6 +67,7 @@ class addUserInfo extends Component {
         return (
             <>
                 <form>
+                    <h1>User Informations</h1>
                     <label>Nom : </label>
                     <input
                         type="text"
@@ -127,7 +128,7 @@ class addUserInfo extends Component {
 
                 <StripeProvider apiKey="pk_test_JhtvLx6RBQkhFgP9ZUDqBumD">
                     <div className="example">
-                        <h1>React Stripe Elements Example</h1>
+                        <h1>Credit card informations</h1>
                         <Elements>
                             <CheckoutForm/>
                         </Elements>
@@ -138,4 +139,4 @@ class addUserInfo extends Component {
     }
 }
 
-export default addUserInfo;
+export default AddUserInfo;

@@ -8,7 +8,7 @@ import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
 import logo from "./resources/logo.png";
 import './Forms/Menu.css';
 import products from "./Forms/Products";
-import addUserInfo from "./Forms/AddUserInfo";
+import AddUserInfo from "./Forms/AddUserInfo";
 import productDetail from "./Forms/ProductDetail";
 import Bag from "./Forms/Bag.js";
 
@@ -65,7 +65,7 @@ class App extends Component {
                                         <Link className="cool" to="/products">Products</Link>
                                     </li>
                                     <li>
-                                        <Link className="cool" to="/addUserInfo">Add User</Link>
+                                        <Link className="cool" to="/AddUserInfo">Add User</Link>
                                     </li>
                                     <li>
                                         <Link className="cool" to="/bag">Bag</Link>
@@ -86,7 +86,7 @@ class App extends Component {
                         <Route path="/addReference" render={() => <AddReference handleSubmit={this.handleSubmit}/>}/>
                         <Route path="/products" component={products}/>
                         <Route path='/product/:id' component={productDetail}/>
-                        <Route path="/addUserInfo" component={addUserInfo}/>
+                        <Route path="/addUserInfo" component={AddUserInfo}/>
                         <Route path="/bag" component={Bag}/>
                     </div>
                 </Router>

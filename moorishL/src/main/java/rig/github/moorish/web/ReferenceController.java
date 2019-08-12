@@ -23,6 +23,7 @@ import com.stripe.Stripe;
 import com.stripe.model.Charge;
 
 import rig.github.moorish.model.Payement;
+import rig.github.moorish.model.Product;
 import rig.github.moorish.model.Reference;
 import rig.github.moorish.model.Sale;
 import rig.github.moorish.model.enums.Category;
@@ -162,8 +163,9 @@ public class ReferenceController {
 	}
 	
 	@PostMapping("/purchaseProducts")
-	public boolean purchaseProducts(@RequestBody Sale sale) {
-		System.out.println(sale.getTotalAmount());
+	public boolean purchaseProducts(@RequestBody List<Product> products) {
+		System.out.println("This is products : ");
+		System.out.println(products);
 		return false;
 	}
 	
