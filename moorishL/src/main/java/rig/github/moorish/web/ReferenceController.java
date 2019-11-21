@@ -2,8 +2,10 @@ package rig.github.moorish.web;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -26,6 +28,7 @@ import rig.github.moorish.model.Payement;
 import rig.github.moorish.model.Product;
 import rig.github.moorish.model.Reference;
 import rig.github.moorish.model.Sale;
+import rig.github.moorish.model.enums.Brand;
 import rig.github.moorish.model.enums.Category;
 import rig.github.moorish.model.enums.SubAccessories;
 import rig.github.moorish.model.enums.SubClothing;
@@ -64,6 +67,9 @@ public class ReferenceController {
 		ref.setGender(reference.getGender());
 		ref.setPrice(reference.getPrice());
 		ref.setRef(reference.getRef());
+		ref.setMarque(reference.getMarque());
+		ref.setColors(reference.getColors());
+		ref.setSizes(reference.getSizes());
 		ref.setPathPrincipal(path);
 		if(defaultProductService.getReferenceByRef(ref.getRef())!=null) 
 			defaultProductService.deleteReferenceByRef(ref.getRef());
@@ -102,6 +108,11 @@ public class ReferenceController {
 		return Category.values();
 	}
 	
+	@GetMapping("/brandReference")
+	public Brand[] brandReference() {
+		return Brand.values();
+	}
+	
 	@GetMapping("/getReference/{id}")
 	public Reference getReference(@PathVariable("id") String id) {
 		logger.info("The retrieved parameter is " + id);
@@ -110,7 +121,18 @@ public class ReferenceController {
 		logger.info("The returned reference is " + reference);
 		return reference;
 	}
-		
+	
+	@GetMapping("/getCategoriesByGender/{gender}")
+	public Set<String> getCategoriesByGender(@PathVariable("gender") String gender) {
+		logger.info("The retrieved parameter is " + gender);
+		Set<String> categoriesByGender = new HashSet<>();
+		Reference[] refBygender = defaultProductService.getCategoriesByGender(gender);
+		for (Reference reference : refBygender) {
+			categoriesByGender.add(reference.getCategory().toString());
+		}
+		return categoriesByGender;
+	}
+	
 	@PostMapping("/subCategory")
 	public Object[] subCategoryReference(@RequestBody String category) {
 		if(category.equals("CLOTHING=")) {

@@ -44,7 +44,13 @@ public class DefaultProductService implements ProductService {
 		System.out.println("getReferenceByRef "+ref);
 		return referenceRepo.findByRef(ref);
 	}
-
+	
+	@Override
+	public Reference[] getCategoriesByGender(String gender) {
+		System.out.println("getCategoriesByGender "+gender);
+		return referenceRepo.findAllByGender(gender);
+	}
+	
 	@Transactional
 	public boolean addOrUpdateProduct(Product product) {
 		return productRepo.save(product) != null;

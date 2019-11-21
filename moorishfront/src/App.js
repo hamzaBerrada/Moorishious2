@@ -7,10 +7,11 @@ import axios from "axios";
 import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
 import logo from "./resources/logo.png";
 import './Forms/Menu.css';
-import products from "./Forms/Products";
-import AddUserInfo from "./Forms/AddUserInfo";
-import productDetail from "./Forms/ProductDetail";
+import Products from "./Forms/Products";
+import ProductDetail from "./Forms/ProductDetail";
 import Bag from "./Forms/Bag.js";
+import ProductsByGender from "./Forms/ProductsByGender";
+import ProductsByCategory from "./Forms/ProductsByCategory";
 
 
 class App extends Component {
@@ -32,16 +33,10 @@ class App extends Component {
             .catch(error => {
                 console.log(error);
             })
-
     }
 
     handleSubmit = character => {
         this.setState({characters: [...this.state.characters, character]});
-        console.log("hamidddddd", character);
-    }
-
-    componentWillMount() {
-
     }
 
     render() {
@@ -56,16 +51,13 @@ class App extends Component {
                             <nav>
                                 <ul>
                                     <li>
-                                        <Link className="active cool" to="/table">List Reference</Link>
-                                    </li>
-                                    <li>
                                         <Link className="cool" to="/addReference">Add Reference</Link>
                                     </li>
                                     <li>
-                                        <Link className="cool" to="/products">Products</Link>
+                                        <Link className="active cool" to="/table">List Reference</Link>
                                     </li>
                                     <li>
-                                        <Link className="cool" to="/AddUserInfo">Add User</Link>
+                                        <Link className="cool" to="/products">Products</Link>
                                     </li>
                                     <li>
                                         <Link className="cool" to="/bag">Bag</Link>
@@ -79,17 +71,22 @@ class App extends Component {
                         </header>
 
                     <div className="container">
+                        <Route exact path="/" component={ProductsByGender}/>
                         <Route path="/table"
                                render={() => <ListReference
                                    removeCharacter={this.removeCharacter}
                                />}/>
-                        <Route path="/addReference" render={() => <AddReference handleSubmit={this.handleSubmit}/>}/>
-                        <Route path="/products" component={products}/>
-                        <Route path='/product/:id' component={productDetail}/>
-                        <Route path="/addUserInfo" component={AddUserInfo}/>
-                        <Route path="/bag" component={Bag}/>
+                        <Route exact path="/addReference" render={() => <AddReference handleSubmit={this.handleSubmit}/>}/>
+                        <Route exact path="/bag" component={Bag}/>
+                        <Route exact path='/:gender' component={ProductsByCategory}/>
+                        <Route exact path="/:gender/:category" component={Products}/>
+                        <Route exact path='/:gender/:category/:id' component={ProductDetail}/>
                     </div>
+
+
                 </Router>
+
+
 
 
 

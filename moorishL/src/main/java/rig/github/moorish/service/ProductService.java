@@ -28,4 +28,6 @@ public interface ProductService {
 	
 	Long deleteReferenceByRef(String ref);
 
+	Reference[] getCategoriesByGender(String gender);
+
 }

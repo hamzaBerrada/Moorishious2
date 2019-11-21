@@ -3,9 +3,24 @@ import axios from "axios";
 import logo1 from '../resources/1.jpg';
 import './ProductDetail.css';
 
-class productDetail extends Component {
+class ProductDetail extends Component {
     constructor(props) {
         super(props);
+
+        const ref = this.props.match.params.id;
+        const config = {headers: {'Content-Type': 'multipart/form-data'}};
+        axios.get(`/getReference/${ref}`, config)
+            .then(res => {
+                let product = this.state;
+                product.reference = res.data;
+                this.setState({character: res.data});
+                console.log("componentWillMount : ", this.state.character);
+            })
+            .catch((error) => {
+                console.log("could not retreive the param ", ref);
+            });
+
+
         const colors = ['red', 'yellow', 'green', 'black', 'purple', 'gray', 'blue'];
         const sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
@@ -27,17 +42,6 @@ class productDetail extends Component {
     }
 
     componentWillMount() {
-        const ref = this.props.match.params.id;
-        const config = {headers: {'Content-Type': 'multipart/form-data'}};
-        axios.get(`/getReference/${ref}`, config)
-            .then(res => {
-                let product = this.state;
-                product.reference = res.data;
-                this.setState({character: res.data});
-            })
-            .catch((error) => {
-                console.log("could not retreive the param ", ref);
-            });
 
         const val = localStorage.getItem('bag') || '';
         const bag = JSON.parse(val);
@@ -98,6 +102,7 @@ class productDetail extends Component {
 
     render() {
         const {character} = this.state;
+
         return (
             <>
                 <div className="Container-product">
@@ -118,16 +123,16 @@ class productDetail extends Component {
                                onInput={this.changeQty} />
 
                         <div className="Product-sizes">
-                            {this.state.sizes.map(size => {
-                                return (<div className="Product-size"
+                            {(character.sizes || this.state.sizes).map(size => {
+                                return (<div key={size} className="Product-size"
                                              onClick={()=>this.changeSize(size)}>{size}</div>)
                             })
                             }
                         </div>
 
                         <div className="Product-colors">
-                            {this.state.colors.map(col => {
-                                return (<div className="Product-color" style={{"backgroundColor" : col}}
+                            {(character.colors || this.state.colors).map(col => {
+                                return (<div key={col} className="Product-color" style={{"backgroundColor" : col}}
                                              onClick={()=>this.changeColor(col)}> </div>)
                             })
                             }
@@ -144,4 +149,4 @@ class productDetail extends Component {
     }
 }
 
-export default productDetail;
+export default ProductDetail;

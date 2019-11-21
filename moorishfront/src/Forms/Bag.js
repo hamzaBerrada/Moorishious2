@@ -142,7 +142,7 @@ class Bag extends Component {
                                             <select name="color" value={key.color}
                                                     onChange={(ev) => this.changeColor(ev, index)}
                                                     multiple={false}>
-                                                {this.state.color.map(field => (
+                                                {(key.reference.colors || this.state.color).map(field => (
                                                     <option key={field} value={field}>
                                                         {field}
                                                     </option>
@@ -153,7 +153,7 @@ class Bag extends Component {
                                             <select name="size" value={key.size}
                                                     onChange={(ev) => this.changeSize(ev, index)}
                                                     multiple={false}>
-                                                {this.state.size.map(field => (
+                                                {(key.reference.sizes ||this.state.size).map(field => (
                                                     <option key={field} value={field}>
                                                         {field}
                                                     </option>

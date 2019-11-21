@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './AddReference.css';
 import axios from "axios";
 
@@ -6,21 +6,38 @@ class AddReference extends Component {
     constructor(props) {
         super(props);
 
+        const selectedColors = {
+            'red': true, 'yellow': true, 'green': true, 'black': true, 'purple': true,
+            'gray': true, 'blue': true, 'white': true, 'brown': true, 'orange': true
+        };
+        const selectedSizes = {'XS': true, 'S': true, 'M': true, 'L': true, 'XL': true, '2XL': true,
+            '3XL': true, '4XL': true};
+
         this.character = {
-            ref:'',
+            ref: '',
             name: '',
             price: '',
-            gender:'MEN',
-            category:[],
-            subCategory:[],
-            desc:'',
+            gender: 'MEN',
+            category: [],
+            subCategory: [],
+            brand: [],
+            desc: '',
+            colors:[],
+            sizes:[],
             file: null,
 
             error: '',
-            msg: ''
+            msg: '',
+
+            checkSize: 'checkedSize',
+            checkColor: 'checkedColor'
         };
 
-        this.state = {character : this.character, characters: []};
+        this.state = {
+            character: this.character,
+            characters: [],
+            selectedColors,
+            selectedSizes};
     }
 
     componentWillMount() {
@@ -28,23 +45,33 @@ class AddReference extends Component {
             .then(res => {
                 const character = {...this.state.character};
                 character.category = res.data;
-                this.setState({character: character})})
-            .catch((error)=>{
+                this.setState({character: character})
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios.get(`/brandReference`)
+            .then(res => {
+                const character = {...this.state.character};
+                character.brand = res.data;
+                this.setState({character: character})
+            })
+            .catch((error) => {
                 console.log(error);
             });
     }
 
     handleCategory = event => {
-       this.handleChange(event);
-       const cat = ""+event.target.value;
-       console.log(cat);
+        this.handleChange(event);
+        const cat = "" + event.target.value;
+        console.log(cat);
         axios.post(`/subCategory`, cat)
             .then(res => {
-                console.log("hhhhhh", res)
                 const character = {...this.state.character};
                 character.subCategory = res.data;
-                this.setState({character: character})})
-            .catch((error)=>{
+                this.setState({character: character})
+            })
+            .catch((error) => {
                 console.log(error);
             });
     };
@@ -52,7 +79,7 @@ class AddReference extends Component {
     handleChange = event => {
         const {name, value} = event.target;
         this.setState({
-            [name] : value
+            [name]: value
         });
     };
 
@@ -62,19 +89,31 @@ class AddReference extends Component {
         });
     }
 
+    changeColor = (event, col) => {
+        let {selectedColors} = this.state;
+        selectedColors[col] = event.target.checked;
+        this.setState({selectedColors});
+    }
+
+    changeSize = (event,size) => {
+        let {selectedSizes} = this.state;
+        selectedSizes[size] = event.target.checked;
+        this.setState({selectedSizes});
+    }
+
     submitForm = (event) => {
         event.preventDefault();
 
 
         //////////////////////Upload///////////////////////////
-        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+        const config = {headers: {'Content-Type': 'multipart/form-data'}};
         // event.preventDefault();
         this.setState({error: '', msg: ''});
-        if(!this.state.file) {
+        if (!this.state.file) {
             this.setState({error: 'Please upload a file.'})
             return;
         }
-        if(this.state.file.size >= 2000000) {
+        if (this.state.file.size >= 2000000) {
             this.setState({error: 'File size exceeds limit of 2MB.'})
             return
         }
@@ -91,15 +130,24 @@ class AddReference extends Component {
                 console.log(error);
             })
         ////////////////////////////////////////////////////////
+        const {selectedColors, selectedSizes, character} = this.state;
+        let colors = Object.keys(selectedColors).filter(key => selectedColors[key]);
+        let sizes = Object.keys(selectedSizes).filter(key => selectedSizes[key]);
+        character.colors = colors;
+        character.sizes = sizes;
+        this.setState({character: character});
 
         const reference = {
-            ref : this.state.ref,
-            name : this.state.name,
-            price : this.state.price,
+            ref: this.state.ref,
+            name: this.state.name,
+            price: this.state.price,
             gender: this.state.gender,
-            category:this.state.category,
-            subCategory:this.state.subCategory,
-            desc:this.state.desc
+            category: this.state.category,
+            subCategory: this.state.subCategory,
+            brand: this.state.brand,
+            desc: this.state.desc,
+            colors: this.state.character.colors,
+            sizes: this.state.character.sizes
         }
         axios.post(`/addReference`, reference)
             .then(res => {
@@ -110,7 +158,8 @@ class AddReference extends Component {
     }
 
     render() {
-        const { ref, name, price, gender, category, subCategory, desc } = this.state;
+        const {ref, name, price, gender, category, subCategory, brand, desc, selectedColors, selectedSizes} = this.state;
+        const {checkSize, checkColor} = this.state.character;
 
         return (
             <form>
@@ -119,7 +168,7 @@ class AddReference extends Component {
                     type="text"
                     name="ref"
                     value={ref}
-                    onChange={this.handleChange} />
+                    onChange={this.handleChange}/>
                 <label>Name</label>
                 <input
                     type="text"
@@ -135,19 +184,19 @@ class AddReference extends Component {
                     onChange={this.handleChange}/>
                 <label>Gender</label>
                 <label className="radio">
-                <input
-                    type="radio"
-                    name="gender"
-                    value="MEN"
-                    checked={gender === 'MEN'}
-                    onChange={this.handleChange}/>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="MEN"
+                        checked={gender === 'MEN'}
+                        onChange={this.handleChange}/>
                     MEN</label>
                 <label className="radio">
-                <input
-                    type="radio"
-                    name="gender"
-                    value="WOMEN"
-                    onChange={this.handleChange}/>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="WOMEN"
+                        onChange={this.handleChange}/>
                     WOMEN</label>
                 <label>Category</label>
                 <select name="category" value={category} onChange={this.handleCategory} multiple={true}>
@@ -165,11 +214,46 @@ class AddReference extends Component {
                         </option>
                     ))}
                 </select>
+                <label>Brand</label>
+                <select name="brand" value={brand} onChange={this.handleChange} multiple={false}>
+                    {this.state.character.brand.map(field => (
+                        <option key={field} value={field}>
+                            {field}
+                        </option>
+                    ))}
+                </select>
                 <label>Description</label>
                 <textarea
                     name="desc"
                     value={desc}
                     onChange={this.handleChange}/>
+
+                <label>Choose sizes</label>
+                <div className="Product-sizes">
+                    {(Object.keys(selectedSizes)).map(size => {
+                        return (
+                            <div key={size}>
+                                <input type='checkbox' checked={selectedSizes[size]}
+                                       onChange={(event) => this.changeSize(event, size)}/>
+                                <div className={checkSize}>{size}</div>
+                            </div>
+                        )
+                    })
+                    }
+                </div>
+                <label>Choose colors</label>
+                <div className="Product-colors">
+                    {(Object.keys(selectedColors)).map((col) => {
+                        return (
+                            <div key={col}>
+                                <input type='checkbox' checked={selectedColors[col]}
+                                       onChange={(event) => this.changeColor(event, col)}/>
+                                <div className={checkColor} style={{"backgroundColor": col}}> </div>
+                            </div>)
+                    })
+                    }
+                </div>
+
                 <label>Principal Image</label>
                 <div className="App-intro">
                     <h4 style={{color: 'red'}}>{this.state.error}</h4>
@@ -180,7 +264,7 @@ class AddReference extends Component {
                 <input
                     type="button"
                     value="Submit"
-                    onClick={this.submitForm} />
+                    onClick={this.submitForm}/>
             </form>
         );
     }

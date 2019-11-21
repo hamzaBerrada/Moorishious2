@@ -13,3 +13,21 @@ input{
 .App-intro{
     margin-bottom: 1rem;
 }
+
+.checkedColor{
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.checkedSize{
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: solid 1px;
+    text-align: center;
+    font-size: 0.6em;
+    font-weight: bold;
+}
