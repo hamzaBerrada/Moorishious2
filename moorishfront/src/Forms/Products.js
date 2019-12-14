@@ -21,7 +21,11 @@ class Products extends Component {
             selected: '',
             colors,
             sizes,
+            subCategories: [],
+            brands: [],
             filters: [
+                character => true,
+                character => true,
                 character => true,
                 character => true,
                 character => true
@@ -33,6 +37,7 @@ class Products extends Component {
         const config = {headers: {'Content-Type': 'multipart/form-data'}};
         const category = this.props.match.params.category.toUpperCase();
         const gender = this.props.match.params.gender.toUpperCase();
+        this.setState({gender: gender, category: category});
 
         axios.get(`/listReference`, config)
             .then(res => {
@@ -43,9 +48,20 @@ class Products extends Component {
                 console.log(error);
             });
 
-        axios.get(`/listSubCategory`)
+        axios.post(`/subCategory`, category)
             .then(res => {
-                this.setState({characters: res.data });
+                const subCategories = ['ALL', ...res.data];
+                this.setState({subCategories: subCategories})
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        axios.get(`/brandReference`)
+            .then(res => {
+                const brands = ['ALL', ...res.data];
+                this.setState({brands: brands})
+                console.log("this is the brands : ",this.state.brands);
             })
             .catch((error) => {
                 console.log(error);
@@ -106,6 +122,7 @@ class Products extends Component {
             for(let i = 0; i < character.sizes.length; ++i) {
                 for(let j = 0; j < selectedSizes.length; ++j) {
                     if(character.sizes[i] === selectedSizes[j]) {
+                        console.log("character :",character.sizes[i])
                         return true;
                     }
                 }
@@ -116,15 +133,31 @@ class Products extends Component {
         this.setState({ filters });
     }
 
+    filterBrand = (brand) => {
+        const {filters} = this.state;
+        if(brand === 'ALL') filters[4] = character => character.brand !== brand;
+        else filters[3] = character => character.brand === brand;
+        this.setState({ filters });
+    }
+
+    filterSubCategory = (subCategory) => {
+        const {filters} = this.state;
+        if(subCategory === 'ALL') filters[4] = character => character.subCategories !== subCategory;
+        else filters[4] = character => character.subCategory === subCategory;
+        this.setState({ filters });
+    }
+
     render() {
-        const {characters, colors, sizes, filters} = this.state;
+        const {characters, colors, sizes, filters, subCategories, brands} = this.state;
         const displayedCharacters = characters.filter(filters[0])
             .filter(filters[1])
-            .filter(filters[2]);
+            .filter(filters[2])
+            .filter(filters[3])
+            .filter(filters[4]);
 
         return (
             <div>
-                <h1>Jackets</h1>
+                <p>MOORISH | {this.state.gender} | {this.state.category}</p>
 
                 <div>
                     <h2>Filter By</h2>
@@ -135,7 +168,7 @@ class Products extends Component {
                             name="range"
                             value="all"
                             onChange={() => this.filterPrice(0.0001, Number.MAX_SAFE_INTEGER)}/>
-                        All products</label>
+                        ALL</label>
                     <label className="radio">
                         <input
                             type="radio"
@@ -191,6 +224,31 @@ class Products extends Component {
                         })
                         }
                     </div>
+
+                    <label>Brand</label>
+                        {brands.map((brand) => {
+                         return (
+                             <label className="radio" key={brand}>
+                                <input
+                                    type="radio"
+                                    name="brand"
+                                    value="brand"
+                                    onChange={() => this.filterBrand(brand)}/>
+                                {brand}</label>)
+                        })}
+
+                    <label>Category</label>
+                    {subCategories.map((sub) => {
+                        return (
+                            <label className="radio" key={sub}>
+                                <input
+                                    type="radio"
+                                    name="sub"
+                                    value="sub"
+                                    onChange={() => this.filterSubCategory(sub)}/>
+                                {sub}</label>)
+                    })}
+
                 </div>
 
                 <section className="products">

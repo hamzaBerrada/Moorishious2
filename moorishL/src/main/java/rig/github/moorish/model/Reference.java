@@ -32,7 +32,7 @@ public class Reference {
 
 	private String subCategory;
 	
-	private Brand marque;
+	private Brand brand;
 	
 	@ElementCollection
 	private List<String> colors;
@@ -128,12 +128,12 @@ public class Reference {
 		this.pathPrincipal = pathPrincipal;
 	}
 
-	public Brand getMarque() {
-		return marque;
+	public Brand getBrand() {
+		return brand;
 	}
 
-	public void setMarque(Brand marque) {
-		this.marque = marque;
+	public void setBrand(Brand brand) {
+		this.brand = brand;
 	}
 
 	public List<String> getColors() {
@@ -163,7 +163,7 @@ public class Reference {
 		result = prime * result + ((desc == null) ? 0 : desc.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((marque == null) ? 0 : marque.hashCode());
+		result = prime * result + ((brand == null) ? 0 : brand.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((pathPrincipal == null) ? 0 : pathPrincipal.hashCode());
 		result = prime * result + Arrays.hashCode(pictures);
@@ -205,7 +205,7 @@ public class Reference {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (marque != other.marque)
+		if (brand != other.brand)
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -245,8 +245,8 @@ public class Reference {
 	@Override
 	public String toString() {
 		return "Reference [id=" + id + ", ref=" + ref + ", name=" + name + ", price=" + price + ", desc=" + desc
-				+ ", gender=" + gender + ", category=" + category + ", subCategory=" + subCategory + ", marque="
-				+ marque + ", colors=" + colors + ", sizes=" + sizes + ", pathPrincipal=" + pathPrincipal
+				+ ", gender=" + gender + ", category=" + category + ", subCategory=" + subCategory + ", brand="
+				+ brand + ", colors=" + colors + ", sizes=" + sizes + ", pathPrincipal=" + pathPrincipal
 				+ ", pictures=" + Arrays.toString(pictures) + "]";
 	}
 

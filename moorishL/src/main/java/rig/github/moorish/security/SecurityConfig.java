@@ -34,9 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				"/listReference/**","/uploadFile/**","/uploadMultipleFiles/**","/downloadFile/**","/deleteReference/**",
 				"/categoryReference/**","/h2/**","/subCategory/**","/getPaid/**").permitAll();
 		http.authorizeRequests().anyRequest().permitAll();
-		http.addFilterBefore(new CorsResponseFilter(),  UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new CorsResponseFilter(),  UsernamePasswordAuthenticationFilter.class);// filter , class extended(of beforefilter) 
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
 		http.addFilterBefore(new JWTAuthorizationFilter(), CorsResponseFilter.class);
+		//authentication ->authorization -> cors
 	}
 	
 	@Override

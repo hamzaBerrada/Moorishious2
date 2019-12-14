@@ -1,0 +1,10 @@
+.ButtonSubmit{
+    margin-top: 1rem;
+}
+
+.Separator {
+    height: 0.08rem;
+    width: 50%;
+    background-color: black;
+    margin: 0 auto;
+}

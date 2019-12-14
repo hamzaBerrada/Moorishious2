@@ -6,12 +6,16 @@ import AddReference from "./Forms/AddReference";
 import axios from "axios";
 import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
 import logo from "./resources/logo.png";
+import user from "./resources/user.png";
+import bag from "./resources/bag.png";
 import './Forms/Menu.css';
 import Products from "./Forms/Products";
 import ProductDetail from "./Forms/ProductDetail";
 import Bag from "./Forms/Bag.js";
 import ProductsByGender from "./Forms/ProductsByGender";
 import ProductsByCategory from "./Forms/ProductsByCategory";
+import Popup from "reactjs-popup";
+import SignIn from "./Forms/SignIn";
 
 
 class App extends Component {
@@ -59,9 +63,19 @@ class App extends Component {
                                     <li>
                                         <Link className="cool" to="/products">Products</Link>
                                     </li>
-                                    <li>
-                                        <Link className="cool" to="/bag">Bag</Link>
-                                    </li>
+                                    <Link className="bag" to="/bag">
+                                        <img src={bag} alt={"Bag"}/>
+                                    </Link>
+                                    <Popup trigger={<img className="logIn" src={user} alt={"User"}/>} modal>
+                                        {close => (
+                                            <div>
+                                                <a className="close" onClick={close}>
+                                                    &times;
+                                                </a>
+                                                <SignIn></SignIn>
+                                            </div>
+                                        )}
+                                    </Popup>
                                 </ul>
                             </nav>
                             <div className="menu-toggle">
@@ -83,12 +97,7 @@ class App extends Component {
                         <Route exact path='/:gender/:category/:id' component={ProductDetail}/>
                     </div>
 
-
                 </Router>
-
-
-
-
 
             </>
         );

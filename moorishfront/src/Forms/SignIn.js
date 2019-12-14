@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios";
+import './SignIn.css';
 
 class SignIn extends Component {
 
@@ -18,15 +19,13 @@ class SignIn extends Component {
 
     submitForm() {
         const user = {
-            email: this.state.email,
-            address: this.state.password
+            email: 'user',
+            password: 'user'
         };
-        axios.post(`/addUser`, user)
+        axios.post(`/signIn`, user)
             .then(res => {
-                this.props.handleSubmit(user);
+                console.log(res.data);
             });
-
-        this.setState(this.infos);
     }
 
     render() {
@@ -48,8 +47,17 @@ class SignIn extends Component {
                     />
 
                     <input
+                        className="ButtonSubmit"
                         type="button"
-                        value="Submit"
+                        value="Sign In"
+                        onClick={this.submitForm}/>
+                </form>
+                <div className="Separator"> </div>
+                <form>
+                    <input
+                        className="ButtonSubmit"
+                        type="button"
+                        value="Register"
                         onClick={this.submitForm}/>
                 </form>
 

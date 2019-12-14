@@ -67,7 +67,7 @@ public class ReferenceController {
 		ref.setGender(reference.getGender());
 		ref.setPrice(reference.getPrice());
 		ref.setRef(reference.getRef());
-		ref.setMarque(reference.getMarque());
+		ref.setBrand(reference.getBrand());
 		ref.setColors(reference.getColors());
 		ref.setSizes(reference.getSizes());
 		ref.setPathPrincipal(path);

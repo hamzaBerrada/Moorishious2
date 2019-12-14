@@ -19,6 +19,24 @@ header {
     width: 100%;
 }
 
+.logIn {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    top: 8px;
+    right: 4rem;
+    cursor: pointer;
+}
+
+.bag > * {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.3rem;
+    top: 11px;
+    top: 11px;
+    right: 1.5rem;
+}
+
 .logo > * {
     position: absolute;
     top: 8px;

@@ -33,7 +33,7 @@ class ProductDetail extends Component {
 
         this.state = {
             character: [],
-            bag: JSON.parse(localStorage.getItem('bag') || ''),
+            bag: {},
             product,
             colors,
             sizes,
@@ -43,26 +43,19 @@ class ProductDetail extends Component {
 
     componentWillMount() {
 
-        const val = localStorage.getItem('bag') || '';
+        /*const val = localStorage.getItem('bag') || '';
         const bag = JSON.parse(val);
-        this.setState({bag});
+        this.setState({bag});*/
 
     }
 
     componentDidMount() {
         // when user leaves/refreshes the page
-        window.addEventListener(
-            "beforeunload",
-            localStorage.setItem('bag', JSON.stringify(this.state.bag))
-        );
+        localStorage.setItem('bag', JSON.stringify(this.state.bag))
     }
 
     componentWillUnmount() {
-        window.removeEventListener(
-            "beforeunload",
             localStorage.setItem('bag', JSON.stringify(this.state.bag))
-        );
-
         // saves if component has a chance to unmount
         localStorage.setItem('bag', JSON.stringify(this.state.bag))
     }
