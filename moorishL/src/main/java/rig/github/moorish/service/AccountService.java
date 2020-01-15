@@ -8,6 +8,6 @@ import rig.github.moorish.model.AppUser;
 public interface AccountService {
 	public Optional<AppUser> saveUser(AppUser user);
 	public Optional<Role> saveRole(Role role);
-	public void addRoleToUse(String email, String name);
+	public void addRoleToUser(String email, String name);
 	public AppUser findUserByEmail(String email); 
 }

@@ -28,21 +28,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		System.out.println("securityConfig");
         http.headers().frameOptions().disable();//pour faire fonctionner h2, sinon enlever cette ligne completement
 		http.csrf().disable();//sinon il faut que l'app elle meme envoie la requete sinon une requete d'une autre app ou domaine sera rejete (attaque csrf)
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);// No session will be created or used by spring security
 //		http.formLogin().loginPage("/login").and().logout().logoutUrl("/logout");
 		http.authorizeRequests().antMatchers("/login/**","/register/**","/logout/**","/addReference/**",
 				"/listReference/**","/uploadFile/**","/uploadMultipleFiles/**","/downloadFile/**","/deleteReference/**",
 				"/categoryReference/**","/h2/**","/subCategory/**","/getPaid/**").permitAll();
 		http.authorizeRequests().anyRequest().permitAll();
+//		http.exceptionHandling().accessDeniedPage("/login");// If a user try to access a resource without having enough permissions
+		
 		http.addFilterBefore(new CorsResponseFilter(),  UsernamePasswordAuthenticationFilter.class);// filter , class extended(of beforefilter) 
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
 		http.addFilterBefore(new JWTAuthorizationFilter(), CorsResponseFilter.class);
-		//authentication ->authorization -> cors
+		//**authentication(servlet) = config JWT ->**authorization(filter) = config JWT ->**cors(filter) = security of spring
 	}
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);//Password encoder – in our case bcrypt
 		
 		
 	}

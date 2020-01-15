@@ -16,6 +16,8 @@ import ProductsByGender from "./Forms/ProductsByGender";
 import ProductsByCategory from "./Forms/ProductsByCategory";
 import Popup from "reactjs-popup";
 import SignIn from "./Forms/SignIn";
+import SignUp_step1 from "./Forms/SignUp_step1";
+import SignUp_step2 from "./Forms/SignUp_step2";
 
 
 class App extends Component {
@@ -95,6 +97,8 @@ class App extends Component {
                         <Route exact path='/:gender' component={ProductsByCategory}/>
                         <Route exact path="/:gender/:category" component={Products}/>
                         <Route exact path='/:gender/:category/:id' component={ProductDetail}/>
+                        <Route exact path='/signUp_step1' component={SignUp_step1}/>
+                        <Route exact path='/signUp_step2' component={SignUp_step2}/>
                     </div>
 
                 </Router>

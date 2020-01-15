@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
-public class JWTAuthorizationFilter extends OncePerRequestFilter{
+public class JWTAuthorizationFilter extends OncePerRequestFilter{//checks if there is an Authorization header with the correct token. if the token is not expired or if the signature key is correct.
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -37,7 +37,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{
 		roles.forEach(r->authorities.add(new SimpleGrantedAuthority(r.get("authority"))));
 		
 		UsernamePasswordAuthenticationToken authenticatedUser = new UsernamePasswordAuthenticationToken(username,null, authorities);
-		SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+		SecurityContextHolder.getContext().setAuthentication(authenticatedUser);//If the token is valid then the filter will add authentication data into Spring’s security context.
 		chain.doFilter(request, response);
 		
 	}

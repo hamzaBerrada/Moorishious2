@@ -28,6 +28,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager ) {
 		super();
 		this.authenticationManager = authenticationManager; 
+		System.out.println("autentication");
+		setFilterProcessesUrl(SecurityConstant.AUTH_LOGIN_URL);
 	}
 	
 	
@@ -52,7 +54,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		User springUser = (User) authResult.getPrincipal();
-		System.out.println(springUser.getUsername());
+		System.out.println("spring username:"+springUser.getUsername());
 		String jwt = Jwts.builder()
 					.setSubject(springUser.getUsername())
 					.setExpiration(new Date(System.currentTimeMillis() + SecurityConstant.EXPiRATION_DATE))
@@ -60,7 +62,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 					.claim("roles", springUser.getAuthorities())
 					.compact();
 		
-		System.out.println(SecurityConstant.HEADER_STRING +  SecurityConstant.TOKEN_PREFIX + jwt);
+		System.out.println("token:"+SecurityConstant.HEADER_STRING +  SecurityConstant.TOKEN_PREFIX + jwt);
 		response.addHeader(SecurityConstant.HEADER_STRING, SecurityConstant.TOKEN_PREFIX + jwt);
 		
 	}
