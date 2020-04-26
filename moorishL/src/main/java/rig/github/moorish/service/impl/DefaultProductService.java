@@ -32,11 +32,16 @@ public class DefaultProductService implements ProductService {
 	}
 
 	public Optional<Product> getProduct(Long id) {
-		return Optional.ofNullable(productRepo.getOne(id));
+		return productRepo.findById(id);
+	}
+	
+	public Optional<Product> getProductByRef(Reference reference) {
+		System.out.println(" The product found "+ productRepo.findByRef(reference));
+		return Optional.ofNullable(productRepo.findByRef(reference));
 	}
 
 	public Optional<Reference> getReference(Long id) {
-		return Optional.ofNullable(referenceRepo.getOne(id));
+		return referenceRepo.findById(id);
 	}
 
 	@Override

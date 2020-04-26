@@ -45,6 +45,14 @@ class App extends Component {
         this.setState({characters: [...this.state.characters, character]});
     }
 
+    isAuthenticated = () => {
+        return !!localStorage.getItem('userInfo');
+    }
+
+    logout = () => {
+        localStorage.removeItem('userInfo');
+    }
+
     render() {
 
         return (
@@ -68,16 +76,22 @@ class App extends Component {
                                     <Link className="bag" to="/bag">
                                         <img src={bag} alt={"Bag"}/>
                                     </Link>
+                                    {!this.isAuthenticated() ?
                                     <Popup trigger={<img className="logIn" src={user} alt={"User"}/>} modal>
                                         {close => (
                                             <div>
-                                                <a className="close" onClick={close}>
+                                                <a href="# " className="close" onClick={close}>
                                                     &times;
                                                 </a>
                                                 <SignIn></SignIn>
                                             </div>
                                         )}
                                     </Popup>
+                                        :
+                                    <Link className="bag" to="/bag">
+                                        <img src={bag} alt={"Bag"}/>
+                                    </Link>
+                                        }
                                 </ul>
                             </nav>
                             <div className="menu-toggle">
@@ -97,12 +111,11 @@ class App extends Component {
                         <Route exact path='/:gender' component={ProductsByCategory}/>
                         <Route exact path="/:gender/:category" component={Products}/>
                         <Route exact path='/:gender/:category/:id' component={ProductDetail}/>
-                        <Route exact path='/signUp_step1' component={SignUp_step1}/>
-                        <Route exact path='/signUp_step2' component={SignUp_step2}/>
+                        <Route exact path='/signUp_step1' component={!this.isAuthenticated() ? SignUp_step1 : ProductsByGender}/>
+                        <Route exact path='/signUp_step2' component={!this.isAuthenticated() ? SignUp_step2 : ProductsByGender}/>
                     </div>
 
                 </Router>
-
             </>
         );
     }

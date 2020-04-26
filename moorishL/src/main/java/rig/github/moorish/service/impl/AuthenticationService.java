@@ -25,5 +25,4 @@ public class AuthenticationService {
 		throw new JwtSecurityException("user not found");
 	}
 
-
 }

@@ -7,11 +7,11 @@ class AddReference extends Component {
         super(props);
 
         const selectedColors = {
-            'red': true, 'yellow': true, 'green': true, 'black': true, 'purple': true,
-            'gray': true, 'blue': true, 'white': true, 'brown': true, 'orange': true
+            'RED': true, 'YELLOW': true, 'GREEN': true, 'BLACK': true, 'PURPLE': true,
+            'GRAY': true, 'BLUE': true, 'WHITE': true, 'BROWN': true, 'ORANGE': true
         };
-        const selectedSizes = {'XS': true, 'S': true, 'M': true, 'L': true, 'XL': true, '2XL': true,
-            '3XL': true, '4XL': true};
+        const selectedSizes = {'XS': true, 'S': true, 'M': true, 'L': true, 'XL': true, 'XXL': true,
+            'XXXL': true, 'XXXXL': true};
 
         this.character = {
             ref: '',
@@ -152,7 +152,9 @@ class AddReference extends Component {
         axios.post(`/addReference`, reference)
             .then(res => {
                 this.props.handleSubmit(reference);
-            })
+            }).catch((error) => {
+            console.log("could not add the ref ");
+        });
 
         this.setState(this.character);
     }

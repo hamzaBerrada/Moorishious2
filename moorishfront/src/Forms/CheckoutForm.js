@@ -21,7 +21,7 @@ class CheckoutForm extends Component {
         evt.preventDefault();
         let {token}= await this.props.stripe.createToken({name : "Name"});
         console.log(token.id);
-        const payement  ={... this.state.payement} ;
+        const payement = {...this.state.payement};
         payement.source = "tok_mastercard";
         this.setState({payement : payement});
 

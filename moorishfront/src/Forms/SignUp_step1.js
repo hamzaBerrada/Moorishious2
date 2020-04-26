@@ -13,7 +13,7 @@ class SignUp_step1 extends Component {
             password: '',
             repassword: ''
         }
-        this.state = {isHidden: 'true', errors: this.errors}
+        this.state = {isHidden: 'true', errors: this.errors, isAuthenticated: false}
     }
 
     componentWillMount() {
@@ -55,7 +55,7 @@ class SignUp_step1 extends Component {
     }
 
     submitForm = () => {
-        const {email, password} = this.state; //Hamza322@ : $2a$10$yCqxG7rzEX3LKSiPOYtQ/uB3Xy4WEHdQhEDh/.vdfwuIQo9vLpVTa
+        const {email, password} = this.state;
         const userForm = {
             email: email, password: password
         }
@@ -64,17 +64,16 @@ class SignUp_step1 extends Component {
                 console.log("Register",res.data);
                 axios.post(`/signIn`, userForm)
                     .then(res => {
-                        this.setState({isHidden: true})
+                        this.setState({isHidden: true, isAuthenticated: true});
                         console.log("Sign in",this.getToken(res.headers));
                         localStorage.setItem("userInfo", JSON.stringify(this.getToken(res.headers)));
                     })
                     .catch((error) => {
-                        this.setState({isHidden: false})
+                        this.setState({isHidden: false, isAuthenticated: false});
                         console.log("could not retrieve the user ");
                     });
             })
             .catch((error) => {
-                this.setState({isHidden: false})
                 console.log("could not insert the user ");
             });
     }

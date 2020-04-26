@@ -29,13 +29,11 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{//checks if the
 		if(jwt == null || !jwt.startsWith(SecurityConstant.TOKEN_PREFIX)) {
 			chain.doFilter(request, response); return;
 		}
-		
 		Claims claims = Jwts.parser().setSigningKey(SecurityConstant.SECRECT).parseClaimsJws(jwt.replace(SecurityConstant.TOKEN_PREFIX, "")).getBody();
 		String username = claims.getSubject();
 		ArrayList<Map<String, String>> roles = (ArrayList<Map<String, String>>) claims.get("roles");
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		roles.forEach(r->authorities.add(new SimpleGrantedAuthority(r.get("authority"))));
-		
 		UsernamePasswordAuthenticationToken authenticatedUser = new UsernamePasswordAuthenticationToken(username,null, authorities);
 		SecurityContextHolder.getContext().setAuthentication(authenticatedUser);//If the token is valid then the filter will add authentication data into Spring’s security context.
 		chain.doFilter(request, response);

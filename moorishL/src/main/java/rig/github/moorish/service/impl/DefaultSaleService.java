@@ -33,11 +33,19 @@ public class DefaultSaleService implements SaleService{
 	}
 
 	public Optional<Sale> getSale(Long id) {
-		return Optional.ofNullable(saleRepo.getOne(id));
+		return saleRepo.findById(id);
 	}
 
 	public Optional<Bag> getBag(Long id) {
-		return Optional.ofNullable(bagRepo.getOne(id));
+		return bagRepo.findById(id);
+	}
+
+	public Optional<Bag> getSaleByUserId(Long id) {
+		return null;
+	}
+
+	public Optional<Bag> getBagByUserId(Long id) {
+		return bagRepo.findBagByUserId(id);
 	}
 
 	@Transactional

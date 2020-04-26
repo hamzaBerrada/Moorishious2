@@ -30,10 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();//sinon il faut que l'app elle meme envoie la requete sinon une requete d'une autre app ou domaine sera rejete (attaque csrf)
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);// No session will be created or used by spring security
 //		http.formLogin().loginPage("/login").and().logout().logoutUrl("/logout");
-		http.authorizeRequests().antMatchers("/login/**","/register/**","/logout/**","/addReference/**",
-				"/listReference/**","/uploadFile/**","/uploadMultipleFiles/**","/downloadFile/**","/deleteReference/**",
-				"/categoryReference/**","/h2/**","/subCategory/**","/getPaid/**").permitAll();
-		http.authorizeRequests().anyRequest().permitAll();
+		http.authorizeRequests().antMatchers("/login/**","/signIn/**","/register/**","/logout/**","/addReference/**","/getCategoriesByGender/**",
+				"/listReference/**","/uploadFile/**","/uploadMultipleFiles/**","/downloadFile/**","/deleteReference/**","/getReference/**",
+				"/categoryReference/**","/h2/**","/subCategory/**","/getPaid/**", "/brandReference/**","/getColors/**","/getSizes/**",
+				"/getExistingProducts/**").permitAll();
+		http.authorizeRequests().antMatchers("/completeRegister/**","/addToBag/**","/listBag/**","/updateBag/**","/deleteProduct/**")
+		.hasAuthority("USER").anyRequest().authenticated();
 //		http.exceptionHandling().accessDeniedPage("/login");// If a user try to access a resource without having enough permissions
 		
 		http.addFilterBefore(new CorsResponseFilter(),  UsernamePasswordAuthenticationFilter.class);// filter , class extended(of beforefilter) 

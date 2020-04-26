@@ -95,8 +95,6 @@ class ListReference extends Component {
                         pagination={true}
                         onCellValueChanged={this.changeList}
                     >
-
-
                     </AgGridReact>
                 </div>
 

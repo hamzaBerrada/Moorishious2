@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ import rig.github.moorish.model.Reference;
 import rig.github.moorish.model.Sale;
 import rig.github.moorish.model.enums.Brand;
 import rig.github.moorish.model.enums.Category;
+import rig.github.moorish.model.enums.Color;
+import rig.github.moorish.model.enums.Size;
 import rig.github.moorish.model.enums.SubAccessories;
 import rig.github.moorish.model.enums.SubClothing;
 import rig.github.moorish.model.enums.SubJacket;
@@ -113,6 +116,33 @@ public class ReferenceController {
 		return Brand.values();
 	}
 	
+	@GetMapping("/getColors")
+	public Color[] getColors() {
+		return Color.values();
+	}
+	
+	@GetMapping("/getSizes")
+	public Size[] getSizes() {
+		return Size.values();
+	}
+	
+	@PostMapping("/getExistingProducts")
+	public List<Product> getExistingProducts(@RequestBody List<Product> products ) {
+		System.out.println("getExistingProducts");
+		List<Product> prods = new Vector<Product>();
+		List<Product> allProds = defaultProductService.getAllProducts();
+		if(!allProds.isEmpty()) {
+			for (Product existingProd : allProds) {
+				for(Product sentProd : products) {
+					if(sentProd.getRef() == existingProd.getRef())
+						prods.add(existingProd);
+				}
+			}
+			return prods;
+		}
+		return null;
+	}
+	
 	@GetMapping("/getReference/{id}")
 	public Reference getReference(@PathVariable("id") String id) {
 		logger.info("The retrieved parameter is " + id);
@@ -150,7 +180,6 @@ public class ReferenceController {
 		else return null;
 	}
 	
-		
 	@PostMapping("/getPaid")
 	public void getPayement(@RequestBody Payement payement , @RequestBody Sale sale) {
 		Stripe.apiKey = "sk_test_L7pTZLxEobdHSR10XSB7xQss";

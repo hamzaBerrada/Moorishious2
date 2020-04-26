@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from "axios";
 import './SignUp.css';
+import {Link} from "react-router-dom";
 
 class SignUp_step2 extends Component {
 
@@ -26,7 +27,8 @@ class SignUp_step2 extends Component {
         });
     };
 
-    submitForm = () => {
+    submitForm = (event) => {
+        event.preventDefault();
         const {firstName, lastName, country, city, address, postalCode, phone} = this.state; //oe3im3io2r3o2
         const userForm = {
             firstName: firstName, lastName: lastName,
@@ -34,10 +36,14 @@ class SignUp_step2 extends Component {
             address: address, postalCode: postalCode,
             phone: phone
         }
-
+        console.log('this user : ', userForm);
         const jsonToken = localStorage.getItem('userInfo');
         const token = JSON.parse(jsonToken);
-        axios.post(`/completeRegister`, { headers: {"Authorization" : `Bearer ${token}`}, userForm })
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `BEARER ${token}`
+        }
+        axios.post(`/completeRegister`, userForm, { headers: headers})
             .then(res => {
                 console.log("registration completed",res.data);
                 this.setState({isHidden: true})
@@ -50,8 +56,10 @@ class SignUp_step2 extends Component {
 
     render() {
         const {firstName, lastName, country, city, address, postalCode, phone, isHidden} = this.state;
+
         return (
             <>
+                <p>Complete the registration or <Link className="active cool" to="/">customize after ...</Link></p>
                 <form>
                     <label>First name : </label>
                     <input
@@ -103,11 +111,13 @@ class SignUp_step2 extends Component {
                         onChange={this.handleChange}
                     />
                     <p hidden={isHidden} className="IsHiddenText">incorrect data</p>
+                    <Link className="active cool"  to="/" >
                     <input
                         className="ButtonSubmit"
                         type="button"
-                        value="Sign Up"
+                        value="Finish"
                         onClick={this.submitForm}/>
+                    </Link>
                 </form>
             </>
         )

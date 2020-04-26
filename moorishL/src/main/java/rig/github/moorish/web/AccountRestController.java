@@ -5,17 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import rig.github.moorish.model.AppUser;
-import rig.github.moorish.model.Reference;
 import rig.github.moorish.model.RegisterForm;
 import rig.github.moorish.service.AccountService;
-import rig.github.moorish.service.ProductService;
 
 @RestController
 public class AccountRestController {
@@ -23,14 +19,11 @@ public class AccountRestController {
 	@Autowired
 	private AccountService accountService;
 	
-	@Autowired
-	private ProductService defaultProductService;
-	
 	@PostMapping("/register")
 	public AppUser register(@RequestBody RegisterForm userForm) {
 		//if(!userForm.getPassword().equals(userForm.getRepassword())) throw new RuntimeException("you must confirm your password");
 		AppUser user = accountService.findUserByEmail(userForm.getEmail());
-		if(user != null) throw new RuntimeException("this user alrady exist");
+		if(user != null) throw new RuntimeException("this user already exist");
 		AppUser appUser = new AppUser();
 		appUser.setEmail(userForm.getEmail());
 		appUser.setPassword(userForm.getPassword());
@@ -45,15 +38,18 @@ public class AccountRestController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		AppUser user = new AppUser();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			User springUser = (User) auth.getPrincipal(); //the spring user found : anonymousUser
-			System.out.println("the spring user found : "+ springUser.getUsername());
-			user = accountService.findUserByEmail(springUser.getUsername());
+			user = accountService.findUserByEmail((String)auth.getPrincipal());
+			user.setFirstName(userForm.getFirstName());
+			user.setLastName(userForm.getLastName());
+			user.setAddress(userForm.getAddress());
+			user.setCity(userForm.getCity());
+			user.setCountry(userForm.getCountry());
+			user.setPostalCode(userForm.getPostalCode());
+			user.setPhone(userForm.getPhone());
+			accountService.saveUser(user);
 		}
-		else System.out.println("AnonymousAuthenticationToken **********");
-		user.setFirstName(userForm.getFirstName());
-		System.out.println("before completed registration"+ user.getFirstName());
-		accountService.saveUser(user);
-		System.out.println("completed registration");
+		else System.out.println("**AnonymousAuthenticationToken**");
+		
 		return user;
 	}
 	

@@ -33,11 +33,11 @@ public class DefaultRoleService implements RoleService{
 	}
 
 	public Optional<Role> getRole(Long id) {
-		return Optional.ofNullable(roleRepo.getOne(id));
+		return roleRepo.findById(id);
 	}
 
 	public Optional<AppUser> getUser(Long id) {
-		return  Optional.ofNullable(userRepo.getOne(id));
+		return  userRepo.findById(id);
 	}
 
 	@Transactional

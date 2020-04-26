@@ -12,57 +12,75 @@ class ProductDetail extends Component {
         axios.get(`/getReference/${ref}`, config)
             .then(res => {
                 let product = this.state;
-                product.reference = res.data;
+                product.ref = res.data;
                 this.setState({character: res.data});
-                console.log("componentWillMount : ", this.state.character);
+                console.log("character:: ", this.state.character);
             })
             .catch((error) => {
                 console.log("could not retreive the param ", ref);
             });
 
-
-        const colors = ['red', 'yellow', 'green', 'black', 'purple', 'gray', 'blue'];
-        const sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
-
         const product = {
-            reference: this.props,
-            color: '',
-            size: '',
+            ref: this.props,
+            color: 'BLACK',
+            size: 'M',
             quantity: 1
         }
 
         this.state = {
             character: [],
-            bag: {},
+            bag: [],
             product,
-            colors,
-            sizes,
+            colors: [],
+            sizes: [],
             qty: 1
         }
     }
 
     componentWillMount() {
+        this.getColors();
+        this.getSizes();
 
-        /*const val = localStorage.getItem('bag') || '';
-        const bag = JSON.parse(val);
-        this.setState({bag});*/
-
+        const val = localStorage.getItem('bagNotAuth') || '';
+        const bag = [];
+        val !== '' ? this.bag = JSON.parse(val) : this.bag = [];
+        this.setState({bag : this.bag});
     }
 
     componentDidMount() {
         // when user leaves/refreshes the page
-        localStorage.setItem('bag', JSON.stringify(this.state.bag))
+        //localStorage.setItem('bagNotAuth', JSON.stringify(this.state.bag))
     }
 
     componentWillUnmount() {
-            localStorage.setItem('bag', JSON.stringify(this.state.bag))
         // saves if component has a chance to unmount
-        localStorage.setItem('bag', JSON.stringify(this.state.bag))
+        //localStorage.setItem('bagNotAuth', JSON.stringify(this.state.bag))
+    }
+
+    getColors = () => {
+        axios.get(`/getColors`)
+            .then(res => {
+                console.log("getColors : ", res.data);
+                this.setState({colors: res.data});
+            }).catch((error) => {
+            console.log("can't get colors");
+        });
+    }
+
+    getSizes = () => {
+        axios.get(`/getSizes`)
+            .then(res => {
+                console.log("getSizes : ", res.data);
+                this.setState({sizes: res.data});
+            }).catch((error) => {
+            console.log("can't get sizes");
+        });
     }
 
     changeColor = (col) => {
         const { product }  = this.state;
         product.color = col;
+        console.log(col);
         this.setState({product});
     }
 
@@ -80,17 +98,44 @@ class ProductDetail extends Component {
 
     submitForm = (character) => {
         let { product }  = this.state;
-        product.reference = character;
+        product.ref = character;
+        console.log("product : ", product);
+        !this.isAuthenticated()
+            ?   this.storeBagToVisitor(product)
+            :   this.storeBagToAuthenticatedUser(product);
+
+        this.setState(() => { return { product: {}}});
+    }
+
+    storeBagToVisitor =(product) => {
         this.setState(prevState => {
             return {
                 product: {},
                 bag: [...prevState.bag, product]
             }
         }, () => {
-            localStorage.setItem('bag', JSON.stringify(this.state.bag));
-            console.log('The selected product is : ', this.state)});
+                localStorage.setItem('bagNotAuth', JSON.stringify(this.state.bag))
+        });
+    }
 
-        this.setState(() => { return { product: {}}});
+    storeBagToAuthenticatedUser = (product) => {
+        const jsonToken = localStorage.getItem('userInfo');
+        const token = JSON.parse(jsonToken);
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `BEARER ${token}`
+        }
+        console.log("this is the sent product : ",product);
+        axios.post(`/addToBag`, product, { headers: headers})
+            .then(res => {
+                console.log("the bag : ", res.data);
+            }).catch((error) => {
+            console.log("could not add to bag");
+        });
+    }
+
+    isAuthenticated = () => {
+        return localStorage.getItem('userInfo');
     }
 
     render() {
@@ -116,7 +161,7 @@ class ProductDetail extends Component {
                                onInput={this.changeQty} />
 
                         <div className="Product-sizes">
-                            {(character.sizes || this.state.sizes).map(size => {
+                            {(this.state.sizes).map(size => {
                                 return (<div key={size} className="Product-size"
                                              onClick={()=>this.changeSize(size)}>{size}</div>)
                             })
@@ -124,7 +169,7 @@ class ProductDetail extends Component {
                         </div>
 
                         <div className="Product-colors">
-                            {(character.colors || this.state.colors).map(col => {
+                            {(this.state.colors).map(col => {
                                 return (<div key={col} className="Product-color" style={{"backgroundColor" : col}}
                                              onClick={()=>this.changeColor(col)}> </div>)
                             })

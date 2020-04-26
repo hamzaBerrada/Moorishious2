@@ -15,6 +15,10 @@ public interface SaleService {
 	Optional<Sale> getSale(Long id);
 
 	Optional<Bag> getBag(Long id);
+	
+	Optional<Bag> getSaleByUserId(Long id);
+	
+	Optional<Bag> getBagByUserId(Long id);
 
 	boolean addOrUpdateSale(Sale sale);
 

@@ -3,6 +3,7 @@ package rig.github.moorish.model;
 import java.util.List;
 import java.util.Vector;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,21 +20,16 @@ public class Bag {
 	@OneToOne
 	private AppUser user;
 
-	//  id product with the choosed quantity
-	@OneToMany
+	@OneToMany(cascade = CascadeType.PERSIST)
 	private List<Product> products;
 
 	public Bag() {
 		products = new Vector<>();
 	}
 
-
-
-
 	public List<Product> getProducts() {
 		return products;
 	}
-
 
 	public void setProducts(List<Product> products) {
 		this.products = products;

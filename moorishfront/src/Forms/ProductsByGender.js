@@ -2,12 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 
 class ProductsByGender extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-
         return (
             <div>
                 <h2>Story</h2>
@@ -33,7 +28,6 @@ class ProductsByGender extends Component {
                         onClick={this.submitForm}/>
                 </Link>
             </div>
-
         );
     }
 }

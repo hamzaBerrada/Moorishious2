@@ -13,6 +13,8 @@ public interface ProductService {
 	List<Reference> getAllReferences();
 
 	Optional<Product> getProduct(Long id);
+	
+	Optional<Product> getProductByRef(Reference reference);
 
 	Optional<Reference> getReference(Long id);
 	
