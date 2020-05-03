@@ -34,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				"/listReference/**","/uploadFile/**","/uploadMultipleFiles/**","/downloadFile/**","/deleteReference/**","/getReference/**",
 				"/categoryReference/**","/h2/**","/subCategory/**","/getPaid/**", "/brandReference/**","/getColors/**","/getSizes/**",
 				"/getExistingProducts/**").permitAll();
-		http.authorizeRequests().antMatchers("/completeRegister/**","/addToBag/**","/listBag/**","/updateBag/**","/deleteProduct/**")
+		http.authorizeRequests().antMatchers("/completeRegister/**","/addToBag/**","/listBag/**","/updateBag/**","/deleteProduct/**",
+				"/getUser/**")
 		.hasAuthority("USER").anyRequest().authenticated();
 //		http.exceptionHandling().accessDeniedPage("/login");// If a user try to access a resource without having enough permissions
 		

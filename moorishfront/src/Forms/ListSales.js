@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './ListReference.css';
+import '../CSS/ListReference.css';
 
 const TableHeader = () => {
     return (

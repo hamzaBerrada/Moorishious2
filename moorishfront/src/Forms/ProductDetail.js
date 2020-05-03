@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from "axios";
 import logo1 from '../resources/1.jpg';
-import './ProductDetail.css';
+import '../CSS/ProductDetail.css';
 
 class ProductDetail extends Component {
     constructor(props) {

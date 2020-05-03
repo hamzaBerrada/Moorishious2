@@ -6,18 +6,17 @@ import AddReference from "./Forms/AddReference";
 import axios from "axios";
 import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
 import logo from "./resources/logo.png";
-import user from "./resources/user.png";
 import bag from "./resources/bag.png";
-import './Forms/Menu.css';
+import './CSS/Menu.css';
 import Products from "./Forms/Products";
 import ProductDetail from "./Forms/ProductDetail";
 import Bag from "./Forms/Bag.js";
 import ProductsByGender from "./Forms/ProductsByGender";
 import ProductsByCategory from "./Forms/ProductsByCategory";
-import Popup from "reactjs-popup";
-import SignIn from "./Forms/SignIn";
 import SignUp_step1 from "./Forms/SignUp_step1";
 import SignUp_step2 from "./Forms/SignUp_step2";
+import UserComponent from "./Forms/UserComponent";
+import UserProfile from "./Forms/UserProfile";
 
 
 class App extends Component {
@@ -49,10 +48,6 @@ class App extends Component {
         return !!localStorage.getItem('userInfo');
     }
 
-    logout = () => {
-        localStorage.removeItem('userInfo');
-    }
-
     render() {
 
         return (
@@ -76,22 +71,7 @@ class App extends Component {
                                     <Link className="bag" to="/bag">
                                         <img src={bag} alt={"Bag"}/>
                                     </Link>
-                                    {!this.isAuthenticated() ?
-                                    <Popup trigger={<img className="logIn" src={user} alt={"User"}/>} modal>
-                                        {close => (
-                                            <div>
-                                                <a href="# " className="close" onClick={close}>
-                                                    &times;
-                                                </a>
-                                                <SignIn></SignIn>
-                                            </div>
-                                        )}
-                                    </Popup>
-                                        :
-                                    <Link className="bag" to="/bag">
-                                        <img src={bag} alt={"Bag"}/>
-                                    </Link>
-                                        }
+                                    <UserComponent> </UserComponent>
                                 </ul>
                             </nav>
                             <div className="menu-toggle">
@@ -113,6 +93,8 @@ class App extends Component {
                         <Route exact path='/:gender/:category/:id' component={ProductDetail}/>
                         <Route exact path='/signUp_step1' component={!this.isAuthenticated() ? SignUp_step1 : ProductsByGender}/>
                         <Route exact path='/signUp_step2' component={!this.isAuthenticated() ? SignUp_step2 : ProductsByGender}/>
+                        <Route exact path="/userProfile" component={this.isAuthenticated() ? UserProfile : ProductsByGender}/>
+                        <Route exact path="/userComponent" component={this.isAuthenticated() ? UserProfile : ProductsByGender}/>
                     </div>
 
                 </Router>

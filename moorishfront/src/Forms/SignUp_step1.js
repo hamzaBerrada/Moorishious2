@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios";
-import './SignUp.css';
+import '../CSS/SignUp.css';
 import {Link} from "react-router-dom";
 
 class SignUp_step1 extends Component {

@@ -1,10 +1,9 @@
-import React, {Component} from 'react';
-import axios from "axios";
-import '../CSS/SignUp.css';
+import React, { Component } from 'react';
+import '../CSS/Form.css';
 import {Link} from "react-router-dom";
+import axios from "axios";
 
-class SignUp_step2 extends Component {
-
+class UserProfile extends Component {
     constructor(props) {
         super(props);
         this.user = {
@@ -14,10 +13,21 @@ class SignUp_step2 extends Component {
             phone: ''
         }
         this.state = {user: this.user, isHidden: 'true'}
-    }
 
-    componentWillMount() {
-        console.log("Component will mount");
+        const jsonToken = localStorage.getItem('userInfo');
+        const token = JSON.parse(jsonToken);
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `BEARER ${token}`
+        }
+        axios.get(`/getUser`, { headers: headers})
+            .then(res => {
+                if((res.data) === null || (res.data) === "" || (res.data) === undefined) return;
+                else this.setState({user: res.data});
+                console.log(res.data)
+            }).catch((error) => {
+            console.log("could not get user");
+        });
     }
 
     handleChange = event => {
@@ -29,14 +39,17 @@ class SignUp_step2 extends Component {
 
     submitForm = (event) => {
         event.preventDefault();
-        const {firstName, lastName, country, city, address, postalCode, phone} = this.state; //oe3im3io2r3o2
+        const {firstName, lastName, country, city, address, postalCode, phone} = this.state;
         const userForm = {
-            firstName: firstName, lastName: lastName,
-            country: country, city: city,
-            address: address, postalCode: postalCode,
-            phone: phone
+            firstName: firstName || this.state.user.firstName,
+            lastName: lastName || this.state.user.lastName,
+            country: country || this.state.user.country,
+            city: city || this.state.user.city,
+            address: address || this.state.user.address,
+            postalCode: postalCode || this.state.user.postalCode,
+            phone: phone || this.state.user.phone
         }
-        console.log('this user : ', userForm);
+
         const jsonToken = localStorage.getItem('userInfo');
         const token = JSON.parse(jsonToken);
         const headers = {
@@ -55,73 +68,75 @@ class SignUp_step2 extends Component {
     }
 
     render() {
-        const {firstName, lastName, country, city, address, postalCode, phone, isHidden} = this.state;
+        const {firstName, lastName, country, city, address, postalCode, phone} = this.state.user;
+        const isHidden = this.state.isHidden;
 
         return (
             <>
-                <p>Complete the registration or <Link className="active cool" to="/">customize after ...</Link></p>
+                <p>You can edit your profile information : </p>
                 <form>
                     <label>First name : </label>
                     <input
                         type="text"
                         name="firstName"
-                        value={firstName}
+                        defaultValue={firstName}
                         onChange={this.handleChange}
                     />
                     <label>Last name : </label>
                     <input
                         type="text"
                         name="lastName"
-                        value={lastName}
+                        defaultValue={lastName}
                         onChange={this.handleChange}
                     />
                     <label>Country : </label>
                     <input
                         type="text"
                         name="country"
-                        value={country}
+                        defaultValue={country}
                         onChange={this.handleChange}
                     />
                     <label>City : </label>
                     <input
                         type="text"
                         name="city"
-                        value={city}
+                        defaultValue={city}
                         onChange={this.handleChange}
                     />
                     <label>Address : </label>
                     <input
                         type="text"
                         name="address"
-                        value={address}
+                        defaultValue={address}
                         onChange={this.handleChange}
                     />
                     <label>Postal code : </label>
                     <input
                         type="text"
                         name="postalCode"
-                        value={postalCode}
+                        defaultValue={postalCode}
                         onChange={this.handleChange}
                     />
                     <label>Phone Number: </label>
                     <input
                         type="text"
                         name="phone"
-                        value={phone}
+                        defaultValue={phone}
                         onChange={this.handleChange}
                     />
                     <p hidden={isHidden} className="IsHiddenText">incorrect data</p>
                     <Link className="active cool"  to="/" >
-                    <input
-                        className="ButtonSubmit"
-                        type="button"
-                        value="Finish"
-                        onClick={this.submitForm}/>
+                        <input
+                            className="ButtonSubmit"
+                            type="button"
+                            value="Finish"
+                            onClick={this.submitForm}/>
                     </Link>
                 </form>
             </>
-        )
+        );
     }
+
 }
 
-export default SignUp_step2;
+export default UserProfile;

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './Bag.css';
+import '../CSS/Bag.css';
 import AddUserInfo from "./AddUserInfo";
 import axios from "axios";
 import SignIn from "./SignIn";

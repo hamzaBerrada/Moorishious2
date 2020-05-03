@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './Products.css';
+import '../CSS/Products.css';
 import axios from "axios";
 import {Link} from 'react-router-dom';
 import logo1 from '../resources/1.jpg';

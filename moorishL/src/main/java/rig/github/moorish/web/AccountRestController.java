@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,14 @@ public class AccountRestController {
 		else System.out.println("**AnonymousAuthenticationToken**");
 		
 		return user;
+	}
+	
+	@GetMapping("/getUser")
+	public AppUser getUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth instanceof AnonymousAuthenticationToken) return null;
+		System.out.println( accountService.findUserByEmail((String)auth.getPrincipal()));
+		return accountService.findUserByEmail((String)auth.getPrincipal());
 	}
 	
 }

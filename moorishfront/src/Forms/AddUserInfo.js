@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './AddUserInfo.css';
+import '../CSS/AddUserInfo.css';
 import axios from "axios";
 import {Elements, StripeProvider} from "react-stripe-elements";
 import CheckoutForm from "./CheckoutForm";
