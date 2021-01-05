@@ -5,7 +5,7 @@
   "dependencies": {
     "ag-grid-community": "^20.2.0",
     "ag-grid-react": "^20.2.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "filepond": "^4.4.6",
     "query-string": "^6.11.1",
     "react": "^16.8.6",
